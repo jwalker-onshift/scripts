@@ -21,6 +21,7 @@
         var isTicket = pageTitle.startsWith('ticket');
         var isAccount = pageTitle.startsWith('account');
         var isInt = pageTitle.startsWith('integration');
+        var isRequest = pageTitle.startsWith('request');
         if( isTicket ){
             // Name
             name_element = $('#cas4_ileinner');
@@ -32,7 +33,11 @@
             name = name_element.text().replace('[View Hierarchy]','').trim();
         }
         else if( isInt ){
-            name_element = $('CF00N3000000Ba6Av_ileinner');
+            name_element = $('#CF00N3000000Ba6Av_ileinner');
+            name = name_element.text().trim();
+        }
+        else if( isRequest ){
+            name_element = $('#CF00N3A00000ClVrH_ileinner');
             name = name_element.text().trim();
         }
         else
@@ -44,7 +49,7 @@
 
 
         var SFID = window.sfdcPage.entityId
-
+        console.log("Name is '" + name + "' and SFID is " + SFID );
         var buttonRow = $('td#topButtonRow');
 
         var jql = '';
@@ -55,7 +60,7 @@
             jql = "project = CSI and cf[10601]~" + SFID + 'QAM';
         }
         else{
-            jql = 'project = CSI and cf[12402]~"' + name + '"';
+            jql = 'project = CSI and (cf[12402]~"' + name + '" OR cf[10601]~' + SFID + ')';
         }
 
         var findLink = 'https://onshift.atlassian.net/issues/?jql=' + encodeURIComponent(jql);
